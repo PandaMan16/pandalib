@@ -99,8 +99,11 @@ const panda = {
               },speed);
             },
         },
-        log:function(content){
-          var r = ["\n %c %c %c log > "+content+" %c \n\n", "background: #ff66a5; padding:5px 0;",  "background: #ff66a5; padding:5px 0;","color: #ff66a5; background: #030307; padding:5px 0;","background: #ff66a5; padding:5px 0;"];
+        log:function(content,color){
+          if(!color){
+            color = "#ff66a5";
+          }
+          var r = ["\n %c %c %c log > "+content+" %c \n\n", "background: "+color+"; padding:5px 0;",  "background: "+color+"; padding:5px 0;","color: "+color+"; background: #030307; padding:5px 0;","background: "+color+"; padding:5px 0;"];
           var e = globalThis.console;
           e.log.apply(e, r);
         },
@@ -333,7 +336,7 @@ const panda = {
     }
 }
 
-var r = ["\n %c %c %c Pandalib - 0.2.4 ✰ 1 ✰  %c  %c  http://www.pandatown.fr/  %c %c ♥%c♥%c♥ \n\n", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
+var r = ["\n %c %c %c Pandalib - 0.2.5 ✰ 1 ✰  %c  %c  http://www.pandatown.fr/  %c %c ♥%c♥%c♥ \n\n", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
 var e = globalThis.console;
 e.log.apply(e, r);
 
