@@ -246,13 +246,19 @@ const panda = {
             break;
         }
       }
-    },
+    /** @constant {constantDataTypeHere} - savegardé et lire des cookie*/},
     cookie: {
+      /** 
+        * save coockie to variable in localstorage.
+        * @summary formate la chaîne de caractére avant sauvegarde dans l'emplacement voulu.
+        * @param {Object} parametres - je contenue a sauvegardé format object.
+        * @param {String} emplacement - l'emplacement de la sauvegarde.
+      */
       save:function(parametres,emplacement){
         function formatOptions(options) {
           var cookieOptions = '';
         
-          // Parcourez toutes les options pour formater la chaîne
+          // Parcourez toutes les options pour formater la chaîne.
           for (var option in options) {
             if (options.hasOwnProperty(option)) {
               cookieOptions += option + '=' + options[option] + ';';
@@ -267,6 +273,11 @@ const panda = {
         let parametresJSON = JSON.stringify(parametres);
         document.cookie = emplacement+'=' + encodeURIComponent(parametresJSON) + ';' + formatOptions(options);
       },
+      /** 
+        * read coockie to variable in localstorage.
+        * @summary li l'emplacement et formate la chaîne de caractére en object.
+        * @param {String} emplacement - l'emplacement de la sauvegarde.
+      */
       read:function(emplacement){
         
         var cookies = document.cookie.split(';');
@@ -350,7 +361,7 @@ const panda = {
     }
 }
 
-var r = ["\n %c %c %c Pandalib - 0.2.7 ✰ 1 ✰  %c  %c  http://www.pandatown.fr/  %c %c ♥%c♥%c♥ \n\n", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
+var r = ["\n %c %c %c Pandalib - 0.2.7.1 ✰ 1 ✰  %c  %c  http://www.pandatown.fr/  %c %c ♥%c♥%c♥ \n\n", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
 var e = globalThis.console;
 e.log.apply(e, r);
 
