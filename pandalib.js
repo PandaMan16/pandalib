@@ -285,7 +285,7 @@ const panda = {
       }
     },
     timeaction: {
-        memoire:{time:0,list:[],event:null},
+        memoire:{time:0,list:[],event:null,state:0},
         add:function(item,option){
             if(this.memoire.event === null){
                 this.clear();
@@ -299,8 +299,17 @@ const panda = {
                 this.memoire.list.push({"item":item,"option":option});
             }
         },
+        pause:function(){
+          if(this.memoire.state){
+            clearInterval(this.memoire.event);
+            this.memoire.state = 0;
+          }else{
+            this.initinterval();
+          }
+        },
         stop:function(){
             clearInterval(this.memoire.event);
+            this.memoire.state = 0;
             this.clear();
         },
         clear(){
@@ -309,6 +318,7 @@ const panda = {
             this.memoire.list = [];
         },
         initinterval:function(){
+            this.memoire.state = 1;
             this.memoire.event = setInterval(() => {
                 const time = this.memoire.time;
                 if(this.memoire.list.length == 0){
@@ -340,7 +350,7 @@ const panda = {
     }
 }
 
-var r = ["\n %c %c %c Pandalib - 0.2.6 ✰ 1 ✰  %c  %c  http://www.pandatown.fr/  %c %c ♥%c♥%c♥ \n\n", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
+var r = ["\n %c %c %c Pandalib - 0.2.7 ✰ 1 ✰  %c  %c  http://www.pandatown.fr/  %c %c ♥%c♥%c♥ \n\n", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
 var e = globalThis.console;
 e.log.apply(e, r);
 
