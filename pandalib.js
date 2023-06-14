@@ -110,8 +110,14 @@ const panda = {
         rdm:function(min,max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         },
+        /** 
+        * create new element html.
+        * @summary create new element whith your parametre.
+        * @param {string} type - type de l'element a créé exemple p.
+        * @param {object} option - vos parametre exemple: {"className": "class1 class2","style":"color:red","innerHTML": "Bonjour"}
+        * @return {element}  retourne votre element avec les parametre deffinit dans object.
+        */
         newelem:function(type, object){
-            //exemple -> newElement("span", {"className": "close btn","innerHTML": "&times;"});
             var element = document.createElement(type);    
             for(var i in object){
                 element[i] = object[i];
