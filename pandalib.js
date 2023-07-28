@@ -374,17 +374,17 @@ const panda = {
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       xhr.onload = function() {
         if (xhr.status === 200) {
-          console.log(xhr.responseText);
+          callback(xhr.responseText);
         } else {
           panda.util.log(xhr.responseText,'red');
         }
       }
-      $req = '';
+      var req = '';
       for(var key in data){
-        if($req != ''){$req += '&';}
-        $req += key + '=' + encodeURIComponent(data[key]);
+        if(req != ''){req += '&';}
+        req += key + '=' + encodeURIComponent(data[key]);
       }
-      xhr.send($req);
+      xhr.send(req);
     }
 }
 
