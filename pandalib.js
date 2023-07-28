@@ -367,6 +367,24 @@ const panda = {
                 this.memoire.time = time+1;
             }, 1000);
         }
+    },
+    ajax:function(url, data , callback){
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          console.log(xhr.responseText);
+        } else {
+          panda.util.log(xhr.responseText,'red');
+        }
+      }
+      $req = '';
+      for(var key in data){
+        if($req != ''){$req += '&';}
+        $req += key + '=' + encodeURIComponent(data[key]);
+      }
+      xhr.send($req);
     }
 }
 
