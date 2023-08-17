@@ -374,7 +374,6 @@ const panda = {
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       xhr.onload = function() {
         if (xhr.status === 200) {
-          panda.util.log(xhr.responseText,'red');
           callback(xhr.responseText);
         } else {
           panda.util.log(xhr.responseText,'red');
