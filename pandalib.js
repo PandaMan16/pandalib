@@ -1,6 +1,29 @@
+/**
+ * Pandalib Library
+ * Main namespace for all Pandalib functionality.
+ * @namespace panda
+ */
 const panda = {
+    /**
+     * Utility functions.
+     * @memberof panda
+     * @namespace util
+     */
     util: {
+        /**
+         * Word-related methods.
+         * @memberof panda.util
+         * @namespace word
+         */
         word: {
+            /**
+             * Display multiple words in an HTML element at a given speed.
+             * @memberof panda.util.word
+             * @function multiple
+             * @param {HTMLElement} item - Target HTML element.
+             * @param {string} message - Message to display.
+             * @param {number} speed - Speed to display the message.
+             */
             multiple:function(item,message,speed) { 
               var vars = {
                 "part":null,
@@ -58,6 +81,15 @@ const panda = {
                 
               },speed);
             },
+            /**
+             * Display a simple message in an HTML element at a given speed.
+             * @memberof panda.util.word
+             * @function simple
+             * @param {HTMLElement} item - Target HTML element.
+             * @param {string} message - Message to display.
+             * @param {number} speed - Speed to display the message.
+             * @param {number} width - Width of the element.
+             */
             simple:function(item,message,speed,width) {
               if(width){
                 var styles = item.getBoundingClientRect();
@@ -99,24 +131,109 @@ const panda = {
               },speed);
             },
         },
-        log:function(content,color){
+        /**
+         * Log a message to the console with a specified color.
+         * @memberof panda.util
+         * @function log
+         * @param {*} content - Content to log.
+         * @param {string} [color="#ff66a5"] - Color of the log text.
+         */
+        log:function(content, color){
+          let message = "";
+          let object = false;
+          switch(typeof content){
+            case "string":
+              message = content;
+              break;
+            case "number":
+              message = content.toString();
+              break;
+            case "bigint":
+              message = content.toString();
+              break;
+            case "boolean":
+              message = content.toString();
+              break;
+            case "symbol":
+              message = content.toString();
+              break;
+            case "undefined":
+              message = "undefined";
+              break;
+            case "object":
+              message = JSON.stringify(content, null, 5);
+              object = true;
+              break;
+            case "function":
+              message = "function";
+              break;
+          }
           if(!color){
             color = "#ff66a5";
           }
-          var r = ["\n %c %c %c log > "+content+" %c \n\n", "background: "+color+"; padding:5px 0;",  "background: "+color+"; padding:5px 0;","color: "+color+"; background: #030307; padding:5px 0;","background: "+color+"; padding:5px 0;"];
+          var r = [];
+          if(!object){
+            r = ["%c %c %c log > "+message+" %c ", "background: "+color+"; padding:5px 0;",  "background: "+color+"; padding:5px 0;","color: "+color+"; background: #030307; padding:5px 0;","background: "+color+"; padding:5px 0;"];
+          }else{
+            let lines = message.split("\n");
+            let text = "";
+            let maxlength = 5;
+            lines.forEach(l => {
+              maxlength = maxlength < l.length ? l.length : maxlength;
+              maxlength = maxlength%2 == 0 ? maxlength : maxlength + 1;
+            });
+            lines.forEach(line => {
+              if(line.length != maxlength){
+                line = line.padEnd(maxlength, " ");
+              }
+              text+= "%c %c "+line+" %c \n";
+            });
+            let startmessage = "log : %c ";
+            const startspace = ((maxlength-startmessage.length)/2)+startmessage.length;
+            let endmessage = "▲▲▲ Log ▲▲▲";
+            const endspace = ((maxlength-endmessage.length)/2)+endmessage.length;
+            let finalstartmessage = startmessage
+              // .padStart(startspace,' ')
+              .padEnd(maxlength, ' ');
+            let finalendmessage = endmessage
+              .padStart(endspace,' ')
+              .padEnd(maxlength,' ');
+            r.push("%c %c "+""+finalstartmessage+" %c \n"+text);//+"%c %c "+finalendmessage+" %c ");
+            r.push("background: "+color+"; padding:5px 0;");
+            r.push("color: "+color+"; background: #030307; padding:5px 0;width: 100px;");
+            r.push("background: "+color+"; padding:5px 6.5px;");
+            r.push("background: "+color+"; padding:5px 0;");
+            lines.forEach(() => {
+              r.push("background: "+color+"; padding:5px 0;");
+              r.push("color: "+color+"; background: #030307; padding:5px 0;");
+              r.push("background: "+color+"; padding:5px 0;");
+            });
+            // r.push("background: "+color+"; padding:5px 0;");
+            // r.push("color: "+color+"; background: #030307; padding:5px 0;width: 100px;");
+            // r.push("background: "+color+"; padding:5px 0;");
+          }
           var e = globalThis.console;
           e.log.apply(e, r);
         },
+        /**
+         * Generate a random number between min and max.
+         * @memberof panda.util
+         * @function rdm
+         * @param {number} min - Minimum value.
+         * @param {number} max - Maximum value.
+         * @returns {number} Random number between min and max.
+         */
         rdm:function(min,max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         },
-        /** 
-        * create new element html.
-        * @summary create new element whith your parametre.
-        * @param {string} type - type de l'element a créé exemple p.
-        * @param {object} option - vos parametre exemple: {"className": "class1 class2","style":"color:red","innerHTML": "Bonjour"}
-        * @return {element}  retourne votre element avec les parametre deffinit dans object.
-        */
+        /**
+         * Create a new HTML element with specified attributes.
+         * @memberof panda.util
+         * @function newelem
+         * @param {string} type - Type of the HTML element to create.
+         * @param {Object} object - Attributes to set on the element.
+         * @returns {HTMLElement} The created HTML element.
+         */
         newelem:function(type, object){
             var element = document.createElement(type);    
             for(var i in object){
@@ -124,6 +241,13 @@ const panda = {
             }
             return element;
         },
+        /**
+         * Convert seconds to HH:MM:SS format.
+         * @memberof panda.util
+         * @function secondToHHMMSS
+         * @param {number} val - Time in seconds.
+         * @returns {string} Time in HH:MM:SS format.
+         */
         secondToHHMMSS:function(val){
           let texttimer = "";
           let h = Math.floor(val/3600);
@@ -152,10 +276,30 @@ const panda = {
           }
           return texttimer;
         },
+        /**
+         * Normalize text.
+         * @memberof panda.util
+         * @function normalize
+         * @param {string} text - Text to normalize.
+         * @returns {string} Normalized text.
+         */
         normalize:function(text){
           return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         },
+        /**
+         * Up-Down item functions.
+         * @memberof panda.util
+         * @namespace uditem
+         */
         uditem: {
+          /**
+           * Add an up-down item element.
+           * @memberof panda.util.uditem
+           * @function add
+           * @param {HTMLElement} elem - Element to add the up-down item to.
+           * @param {*} value - Initial value.
+           * @param {Function} fuct - Function to call on value change.
+           */
           add:function(elem,value,fuct){
             let ArrowUp = panda.util.newelem("span",{"className":"top","innerHTML":">"});
             let ArrowDown = panda.util.newelem("span",{"className":"bottom","innerHTML":">"});
@@ -170,17 +314,43 @@ const panda = {
               }
             });
           },
+          /**
+           * Set the value of an up-down item.
+           * @memberof panda.util.uditem
+           * @function set
+           * @param {HTMLElement} elem - Element to set the value for.
+           * @param {*} value - New value.
+           */
           set:function(elem,value){
             elem.innerHTML = '<span class="top">&gt;</span>'+value+'<span class="bottom">&gt;</span>';
           },
+          /**
+           * Get the value of an up-down item.
+           * @memberof panda.util.uditem
+           * @function get
+           * @param {HTMLElement} elem - Element to get the value from.
+           * @returns {*} Current value.
+           */
           get:function(elem){
             let regex = /<span class="top">&gt;<\/span>(-?\d+)<span class="bottom">&gt;<\/span>/;
             return regex.exec(elem.innerHTML);
           }
         }
     },
+    /**
+     * Loader functionalities.
+     * @memberof panda
+     * @namespace loader
+     */
     loader: {
       var:{init:false},
+      /**
+       * Initialize the loader.
+       * @memberof panda.loader
+       * @function init
+       * @param {HTMLElement} loader - Loader element.
+       * @param {HTMLElement} menu - Menu element.
+       */
       init:function(loader,menu){
         this.var.init = true;
         this.var.loader = loader;
@@ -200,9 +370,24 @@ const panda = {
           });
         }
       },
+      /**
+       * Set the loader menu.
+       * @memberof panda.loader
+       * @function setmenu
+       * @param {HTMLElement} menu - New menu element.
+       */
       setmenu:function(menu){
         this.var.menu = menu;
       },
+      /**
+       * Add a new item to be loaded.
+       * @memberof panda.loader
+       * @function new
+       * @param {HTMLElement} item - Item to be loaded.
+       * @param {HTMLElement} menu - Menu element.
+       * @param {string} type - Type of the item (e.g., "css").
+       * @param {string} ext - External resource.
+       */
       new:function(item,menu,type,ext){
         if(this.init == false){
           console.log("need init(elem loader,elemall menu)");
@@ -228,6 +413,11 @@ const panda = {
           item.src = cheminImage;
         }
       },
+      /**
+       * Called when all resources are loaded.
+       * @memberof panda.loader
+       * @function resourceLoaded
+       */
       resourceLoaded:function(){
         this.var.loadimage++;
         if (this.var.loadimage === this.var.image.length) {
@@ -240,6 +430,12 @@ const panda = {
           this.update(Math.round((this.var.loadimage / this.var.image.length) * 100));
         }
       },
+      /**
+       * Update the loader state.
+       * @memberof panda.loader
+       * @function update
+       * @param {string} state - New state ("show", "hide", or progress value).
+       */
       update:function(state){
         switch (state) {
           case "show":
@@ -254,15 +450,21 @@ const panda = {
             this.var.loader.querySelector('progress').value = state;
             break;
         }
-      }
-    /** @constant {constantDataTypeHere} - savegardé et lire des cookie*/},
+      },
+    },
+    /**
+     * Cookie functionalities.
+     * @memberof panda
+     * @namespace cookie
+     */
     cookie: {
-      /** 
-        * save coockie to variable in localstorage.
-        * @summary formate la chaîne de caractére avant sauvegarde dans l'emplacement voulu.
-        * @param {Object} parametres - je contenue a sauvegardé format object.
-        * @param {String} emplacement - l'emplacement de la sauvegarde.
-      */
+      /**
+       * Save a cookie.
+       * @memberof panda.cookie
+       * @function save
+       * @param {Object} parametres - Cookie data.
+       * @param {string} emplacement - Cookie name.
+       */
       save:function(parametres,emplacement){
         function formatOptions(options) {
           var cookieOptions = '';
@@ -282,11 +484,13 @@ const panda = {
         let parametresJSON = JSON.stringify(parametres);
         document.cookie = emplacement+'=' + encodeURIComponent(parametresJSON) + ';' + formatOptions(options);
       },
-      /** 
-        * read coockie to variable in localstorage.
-        * @summary li l'emplacement et formate la chaîne de caractére en object.
-        * @param {String} emplacement - l'emplacement de la sauvegarde.
-      */
+      /**
+       * Read a cookie.
+       * @memberof panda.cookie
+       * @function read
+       * @param {string} emplacement - Cookie name.
+       * @returns {Object} Cookie data.
+       */
       read:function(emplacement){
         
         var cookies = document.cookie.split(';');
@@ -304,8 +508,20 @@ const panda = {
         return parametres;
       }
     },
+    /**
+     * Time action functionalities.
+     * @memberof panda
+     * @namespace timeaction
+     */
     timeaction: {
         memoire:{time:0,list:[],event:null,state:0},
+        /**
+         * Add a timed action.
+         * @memberof panda.timeaction
+         * @function add
+         * @param {HTMLElement} item - Item for the action.
+         * @param {Object} option - Options for the action.
+         */
         add:function(item,option){
             if(this.memoire.event === null){
                 this.clear();
@@ -319,6 +535,11 @@ const panda = {
                 this.memoire.list.push({"item":item,"option":option});
             }
         },
+        /**
+         * Pause timed actions.
+         * @memberof panda.timeaction
+         * @function pause
+         */
         pause:function(){
           if(this.memoire.state){
             clearInterval(this.memoire.event);
@@ -327,16 +548,31 @@ const panda = {
             this.initinterval();
           }
         },
+        /**
+         * Stop all timed actions.
+         * @memberof panda.timeaction
+         * @function stop
+         */
         stop:function(){
             clearInterval(this.memoire.event);
             this.memoire.state = 0;
             this.clear();
         },
+        /**
+         * Clear all timed actions.
+         * @memberof panda.timeaction
+         * @function clear
+         */
         clear(){
             this.memoire.time = 0;
             this.memoire.event = null;
             this.memoire.list = [];
         },
+        /**
+         * Initialize the action interval.
+         * @memberof panda.timeaction
+         * @function initinterval
+         */
         initinterval:function(){
             this.memoire.state = 1;
             this.memoire.event = setInterval(() => {
@@ -368,6 +604,19 @@ const panda = {
             }, 1000);
         }
     },
+    /**
+     * AJAX functionalities.
+     * @memberof panda
+     * @namespace ajax
+     */
+    /**
+     * Perform an AJAX request.
+     * @memberof panda.ajax
+     * @function ajax
+     * @param {string} url - Endpoint URL.
+     * @param {Object} data - Data to be sent.
+     * @param {Function} callback - Callback function for the response.
+     */
     ajax:function(url, data , callback){
       var xhr = new XMLHttpRequest();
       xhr.open('POST', url);
@@ -388,7 +637,8 @@ const panda = {
     }
 }
 
-var r = ["\n %c %c %c Pandalib - 0.2.8.1 ✰ 1 ✰  %c  %c  http://www.pandatown.fr/  %c %c ♥%c♥%c♥ \n\n", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
+
+var r = ["%c %c %c Pandalib - 0.2.8.2 ✰ 1 ✰  %c  %c  http://www.pandatown.fr/  %c %c ♥%c♥%c♥ ", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
 var e = globalThis.console;
 e.log.apply(e, r);
 
