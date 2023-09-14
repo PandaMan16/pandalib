@@ -237,7 +237,11 @@ const panda = {
         newelem:function(type, object){
             var element = document.createElement(type);    
             for(var i in object){
-                element[i] = object[i];
+                if(i == "value"){
+                  element.setAttribute(i, object[i]);
+                }else{
+                  element[i] = object[i];
+                }
             }
             return element;
         },
