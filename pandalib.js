@@ -638,12 +638,32 @@ const panda = {
         req += key + '=' + encodeURIComponent(data[key]);
       }
       xhr.send(req);
+    },
+    nav:{
+      open: function(url){
+        return window.open(url,this.winname(url));
+      },
+      close: function(url){
+        var win = window.open("",this.winname(url));
+        win.close();
+      },
+      winname: function(){
+        return "win" + url.replace(/[^A-Za-z0-9\-\_]*/g,"");
+      }
     }
 }
 
+const nopub = ['testcom.panda','pandtown.fr','elecmotion.net'];
 
-var r = ["%c %c %c Pandalib - 0.2.8.2 ✰ 1 ✰  %c  %c  http://www.pandatown.fr/  %c %c ♥%c♥%c♥ ", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
-var e = globalThis.console;
-e.log.apply(e, r);
+// Trouver une correspondance en utilisant location.hostname
+const found = nopub.find((obj) => obj === location.hostname);
+
+// Utiliser la méthode log de panda.util
+if (!found) {
+  var r = ["%c %c %c Pandalib - 0.2.8.5 ✰ 1 ✰  %c  %c  http://www.pandatown.fr/  %c %c ♥%c♥%c♥ ", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
+  var e = globalThis.console;
+  e.log.apply(e, r);
+}
+
 
 export { panda };
